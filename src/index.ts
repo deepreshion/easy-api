@@ -133,4 +133,4 @@ const useApi: IBaseApi = {
 }
 
 export default useApi
-export { api }
+export { api, mountApi }
