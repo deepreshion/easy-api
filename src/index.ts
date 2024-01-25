@@ -1,12 +1,9 @@
 import axios from 'axios'
-// import {errorNotify} from '@helpers/useNotify'
 
-let api = axios.create({
-  baseURL: import.meta.env.VITE_APP_API_SERVICE,
-})
+let api = axios.create()
 
-let errorNotify = () => {
-
+let errorNotify = (error: Error) => {
+    console.log('Ошибка', error)
 }
 
 const mountApi = (baseUrl: string, errorCallback: Function) => {
@@ -49,8 +46,8 @@ const useResponse: IUseResponse = async(data = null, options, errorMessage) => {
   } catch (error: any) {
     // обработка ошибок
     console.error(error)
+    errorNotify(error)
     const text: string = errorMessage ?? error.response?.data.error
-    // errorNotify(text ?? 'Что-то пошло не так', 'Ошибка ' + (error.response?.status ?? error.message))
     return null
   }
 }
