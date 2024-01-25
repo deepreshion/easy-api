@@ -1,9 +1,20 @@
 import axios from 'axios'
 // import {errorNotify} from '@helpers/useNotify'
 
-const api = axios.create({
+let api = axios.create({
   baseURL: import.meta.env.VITE_APP_API_SERVICE,
 })
+
+let errorNotify = (error) => {
+    console.log(error);
+}
+
+const mountApi = (baseUrl: string, errorCallback: Function) => {
+    api = axios.create({
+        baseURL: baseUrl,
+    })
+    errorNotify = errorCallback
+}
 
 const useResponse: IUseResponse = async(data = null, options, errorMessage) => {
   let response: any = {}
