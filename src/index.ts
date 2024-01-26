@@ -46,7 +46,7 @@ const sendRequest = async(data: any | null = null, options: ISendRequestOptions)
     response = await api({
       ...options,
       headers: headers,
-      data: JSON.stringify(data),
+      data: requestData,
     })
     return response
   } catch (error: any) {
