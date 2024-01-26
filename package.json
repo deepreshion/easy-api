@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@opsp/ezapi",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "repository": "deepreshion/easy-api",
   "description": "axios abstraction",
   "license": "MIT",
