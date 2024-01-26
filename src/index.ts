@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 interface IAxiosConfig {
     baseURL?: string
     timeout?: number
@@ -22,7 +22,7 @@ interface ISendRequestOptions extends IRequestOptions{
 }
 
 interface IErrorCallback {
-    (error: Error, errorMessage?: string | undefined):void
+    (error: AxiosError, errorMessage?: string | undefined):void
 }
 
 // AxiosInstance
