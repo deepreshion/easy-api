@@ -33,7 +33,9 @@ let errorNotify: IErrorCallback = (error, errorMessage) => {
 }
 
 const mountApi = (config: IAxiosConfig = {}, errorCallback?: IErrorCallback) => {
-    api = axios.create(config)
+    console.log(config);
+  
+    api = axios.create({...config})
     if (errorCallback) {
         errorNotify = errorCallback
     }
