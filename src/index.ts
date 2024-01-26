@@ -49,7 +49,7 @@ const sendRequest = async(data: any | null = null, options: ISendRequestOptions)
       data: JSON.stringify(data),
     })
     return response
-  } catch (error: unknown) {
+  } catch (error: any) {
     // обработка ошибок
       if (error instanceof AxiosError) {
           const axiosErr:AxiosError<ServerError> = error
