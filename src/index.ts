@@ -1,29 +1,6 @@
-import axios, {AxiosError} from 'axios'
-interface IAxiosConfig {
-    baseURL?: string
-    timeout?: number
-    headers?: {[key:string]: any}
-    [key:string]: any
-}
-
-interface IRequestOptions {
-    headers?: {[key:string]: any}
-    token?: string
-    userAgent?: string
-    cookies?: string
-    errorMessage?: string
-    [key:string]: any
-}
-
-interface ISendRequestOptions extends IRequestOptions{
-    url: string
-    method: 'delete' | 'get' | 'patch' | 'post' | 'put'
-    [key:string]: any
-}
-
-interface IErrorCallback {
-    (error: AxiosError, errorMessage?: string | undefined):void
-}
+import axios, {AxiosError, AxiosResponse} from 'axios'
+import { IAxiosConfig, ISendRequestOptions } from "./types/request";
+import { IErrorCallback, ServerError } from "./types/error";
 
 // AxiosInstance
 let api = axios.create()
@@ -39,7 +16,7 @@ const mountApi = (config: IAxiosConfig = {}, errorCallback?: IErrorCallback) => 
     }
 }
 
-const sendRequest = async(data: any | null = null, options: ISendRequestOptions):Promise<null | IResponse> => {
+const sendRequest = async(data: any | null = null, options: ISendRequestOptions):Promise<null | AxiosResponse> => {
   let response: any = {}
   let requestData = data
   let headers = options?.headers || {}
@@ -72,21 +49,15 @@ const sendRequest = async(data: any | null = null, options: ISendRequestOptions)
       data: JSON.stringify(data),
     })
     return response
-  } catch (error: any) {
+  } catch (error: unknown) {
     // обработка ошибок
-    errorNotify(error, options.errorMessage)
-
+      if (error instanceof AxiosError) {
+          const axiosErr:AxiosError<ServerError> = error
+          // Предполагаем, что error имеет свойство response с типом ServerError
+          errorNotify(axiosErr, options.errorMessage)
+      }
     return null
   }
-}
-
-export interface IResponse {
-    config: any,
-    data: any,
-    headers: any,
-    request: any,
-    status: number,
-    statusText: string,
 }
 
 const ezApi = {
