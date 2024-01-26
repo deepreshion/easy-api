@@ -1,0 +1,25 @@
+{
+    "include": ["src/**/*"],
+    "compilerOptions": {
+        "composite": true,
+        "noEmit": true,
+        "strict": true,
+        "strictNullChecks": false,
+        "allowJs": true,
+        "resolveJsonModule": true,
+        "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "useDefineForClassFields": true,
+        "sourceMap": false,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "lib": [
+            "es2018",
+            "dom"
+        ]
+    }
+}

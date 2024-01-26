@@ -1,19 +1,39 @@
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
+interface IAxiosConfig {
+    baseUrl?: string
+    timeout?: number
+    headers?: {[key:string]: any}
+    [key:string]: any
+}
+
+interface IRequestOptions {
+    headers?: {[key:string]: any}
+    token?: string
+    userAgent?: string
+    cookies?: string
+    errorMessage?: string
+    [key:string]: any
+}
+
+interface ISendRequestOptions extends IRequestOptions{
+    url: string
+    method: 'delete' | 'get' | 'patch' | 'post' | 'put'
+    [key:string]: any
+}
 
 let api = axios.create()
 
-let errorNotify = (error: Error) => {
-    console.log('Ошибка', error)
+let errorNotify = (error: Error, errorMessage?: string) => {
+    console.log('Ошибка', error, errorMessage)
 }
 
-const mountApi = (baseUrl: string, errorCallback: Function) => {
-    api = axios.create({
-        baseURL: baseUrl,
-    })
-    errorNotify = errorCallback()
+const mountApi = (config: IAxiosConfig = {}, errorCallback?: () => {}): AxiosInstance => {
+    api = axios.create(config)
+    errorNotify = errorCallback
+    return api
 }
 
-const useResponse: IUseResponse = async(data = null, options, errorMessage) => {
+const sendRequest = async(data: any | null = null, options: ISendRequestOptions):Promise<any> => {
   let response: any = {}
   let headers = options?.headers || {}
   headers = {
@@ -45,22 +65,10 @@ const useResponse: IUseResponse = async(data = null, options, errorMessage) => {
     return response
   } catch (error: any) {
     // обработка ошибок
-    console.error(error)
-    errorNotify(error)
-    const text: string = errorMessage ?? error.response?.data.error
+    errorNotify(error, options.errorMessage)
+
     return null
   }
-}
-
-interface IOptionsUseResponse {
-    url: string
-    method: 'delete' | 'get' | 'patch' | 'post' | 'put'
-    [key:string]: any
-}
-
-interface IUseResponse {
-    // eslint-disable-next-line no-unused-vars
-    (data: any | null, options: IOptionsUseResponse, errorMessage?: string | null | undefined): Promise<any>
 }
 
 export interface IResponse {
@@ -72,59 +80,47 @@ export interface IResponse {
     statusText: string,
 }
 
-interface IBaseApi {
-    /* eslint-disable no-unused-vars */
-    delete(url: string, data?: any | null, opts?: any): Promise<IResponse>
-    get(url: string, params?: any | null, opts?: any,  errorMessage?: string | null): Promise<IResponse>
-    patch(url: string, data: any | null, opts?: any): Promise<IResponse>
-    post(url: string, data: any | null, opts?: any, errorMessage?: string | null): Promise<IResponse>
-    put(url: string, data: any | null, opts?: any): Promise<IResponse>
-    /* eslint-disable no-unused-vars */
-}
-
-const useApi: IBaseApi = {
-  delete(url, data = null, opts = {}) {
-    return useResponse(data, {
+const ezApi = {
+  delete(url: string, data: any = null, opts = {}):Promise<IResponse> {
+    return sendRequest(data, {
       method: 'delete',
       url,
       ...opts,
     })
   },
 
-  get(url, params = null, opts = {}, errorMessage) {
-    return useResponse(null,
+  get(url: string, params: {[key:string]: any} = null, opts = {}):Promise<IResponse> {
+    return sendRequest(null,
       {
         method: 'get',
         url,
         params,
         ...opts,
       },
-      errorMessage
     )
   },
 
-  patch(url, data = null, opts = {}) {
-    return useResponse(data, {
+  patch(url: string, data: any = null, opts = {}):Promise<IResponse> {
+    return sendRequest(data, {
       method: 'patch',
       url,
       ...opts,
     })
   },
 
-  post(url, data = null, opts = {}, errorMessage) {
-    return useResponse(
+  post(url: string, data: FormData | any = null, opts = {}):Promise<IResponse> {
+    return sendRequest(
       data,
       {
         method: 'post',
         url,
         ...opts,
       },
-      errorMessage
     )
   },
 
-  put(url, data = null, opts = {}) {
-    return useResponse(data, {
+  put(url: string, data: any = null, opts = {}):Promise<IResponse> {
+    return sendRequest(data, {
       method: 'put',
       url,
       ...opts,
@@ -132,5 +128,5 @@ const useApi: IBaseApi = {
   },
 }
 
-export default useApi
+export default ezApi
 export { api, mountApi }
