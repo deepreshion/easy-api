@@ -1,11 +1,16 @@
 {
   "type": "module",
   "name": "@opsp/ezapi",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "repository": "deepreshion/easy-api",
   "description": "axios abstraction",
   "license": "MIT",
   "main": "./distribution/index.js",
   "types": "./distribution/index.d.ts",
+  "exports": {
+    "types": "./distribution/index.d.ts",
+    "default": "./distribution/index.js"
+  },
   "scripts": {
     "build": "tsc"
   },

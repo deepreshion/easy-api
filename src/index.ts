@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios'
+import axios from 'axios'
 interface IAxiosConfig {
     baseUrl?: string
     timeout?: number
@@ -25,21 +25,21 @@ interface IErrorCallback {
     (error: Error, errorMessage?: string | undefined):void
 }
 
+// AxiosInstance
 let api = axios.create()
 
 let errorNotify: IErrorCallback = (error, errorMessage) => {
     console.log('Ошибка', error, errorMessage)
 }
 
-const mountApi = (config: IAxiosConfig = {}, errorCallback?: IErrorCallback): AxiosInstance => {
+const mountApi = (config: IAxiosConfig = {}, errorCallback?: IErrorCallback) => {
     api = axios.create(config)
     if (errorCallback) {
         errorNotify = errorCallback
     }
-    return api
 }
 
-const sendRequest = async(data: any | null = null, options: ISendRequestOptions):Promise<any> => {
+const sendRequest = async(data: any | null = null, options: ISendRequestOptions):Promise<null | IResponse> => {
   let response: any = {}
   let headers = options?.headers || {}
   headers = {
@@ -87,7 +87,7 @@ export interface IResponse {
 }
 
 const ezApi = {
-  delete(url: string, data: any | null = null, opts = {}):Promise<IResponse> {
+  delete(url: string, data: any | null = null, opts = {}) {
     return sendRequest(data, {
       method: 'delete',
       url,
@@ -95,7 +95,7 @@ const ezApi = {
     })
   },
 
-  get(url: string, params: {[key:string]: any} | null = null, opts = {}):Promise<IResponse> {
+  get(url: string, params: {[key:string]: any} | null = null, opts = {}) {
     return sendRequest(null,
       {
         method: 'get',
@@ -106,7 +106,7 @@ const ezApi = {
     )
   },
 
-  patch(url: string, data: any | null = null, opts = {}):Promise<IResponse> {
+  patch(url: string, data: any | null = null, opts = {}) {
     return sendRequest(data, {
       method: 'patch',
       url,
@@ -114,7 +114,7 @@ const ezApi = {
     })
   },
 
-  post(url: string, data: FormData | any | null = null, opts = {}):Promise<IResponse> {
+  post(url: string, data: FormData | any | null = null, opts = {}) {
     return sendRequest(
       data,
       {
@@ -125,7 +125,7 @@ const ezApi = {
     )
   },
 
-  put(url: string, data: any | null = null, opts = {}):Promise<IResponse> {
+  put(url: string, data: any | null = null, opts = {}) {
     return sendRequest(data, {
       method: 'put',
       url,
@@ -134,5 +134,5 @@ const ezApi = {
   },
 }
 
-export default ezApi
 export { api, mountApi }
+export default ezApi

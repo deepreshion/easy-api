@@ -6,8 +6,7 @@
         "module": "commonjs",
         "declaration": true, // Генерирует .d.ts файлы (объявления типов)
         "strict": true, // Включает строгие типовые проверки
-        "sourceMap": true,
-        "inlineSources": true,
+        "sourceMap": false,
         "rootDir": "./src",
         "outDir": "./distribution",
         "lib": [
