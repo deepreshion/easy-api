@@ -52,7 +52,7 @@ const sendRequest = async(data: any | null = null, options: ISendRequestOptions)
   } catch (error: any) {
     // обработка ошибок
       if (error instanceof AxiosError) {
-          const axiosErr:AxiosError<ServerError> = error
+          const axiosErr = error as unknown as AxiosError<ServerError>
           // Предполагаем, что error имеет свойство response с типом ServerError
           errorNotify(axiosErr, options.errorMessage)
       }
