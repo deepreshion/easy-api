@@ -7,7 +7,7 @@ npm i @opsp/ezapi
 ```
 
 ## Использование
-
+Все методы возвращают ``Promise``, который содержит либо ответ, либо ``null``, в случае ошибки.
 ```js
 import ezApi from '@opsp/ezapi'
 
@@ -18,7 +18,11 @@ ezApi.get('/todos/1', {color: 'red'})
 
 // -> /todos/1?color=red
 
-ezApi.post('/todos', JSON.stringify(data))
+// при передаче данных не нужно их дополнительно оборачивать в JSON.stringify(data), это сделано под капотом обработчика.
+
+let data = {foo: 'bar'}
+
+ezApi.post('/todos', data)
     .then((res) => {
       console.log(res)
     })
@@ -45,7 +49,7 @@ import { mountApi } from '@opsp/ezapi'
 
 mountApi(
     {
-        baseUrl: 'https://jsonplaceholder.typicode.com'
+        baseURL: 'https://jsonplaceholder.typicode.com'
     }, 
     (error) => {
         // кастомная обработка ошибки

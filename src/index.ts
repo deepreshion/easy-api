@@ -1,6 +1,6 @@
 import axios from 'axios'
 interface IAxiosConfig {
-    baseUrl?: string
+    baseURL?: string
     timeout?: number
     headers?: {[key:string]: any}
     [key:string]: any
@@ -32,10 +32,8 @@ let errorNotify: IErrorCallback = (error, errorMessage) => {
     console.log('Ошибка', error, errorMessage)
 }
 
-const mountApi = (config: IAxiosConfig = {}, errorCallback?: IErrorCallback) => {
-    console.log(config);
-  
-    api = axios.create({...config})
+const mountApi = (config: IAxiosConfig = {}, errorCallback?: IErrorCallback) => {  
+    api = axios.create(config)
     if (errorCallback) {
         errorNotify = errorCallback
     }
@@ -43,6 +41,7 @@ const mountApi = (config: IAxiosConfig = {}, errorCallback?: IErrorCallback) => 
 
 const sendRequest = async(data: any | null = null, options: ISendRequestOptions):Promise<null | IResponse> => {
   let response: any = {}
+  let requestData = data
   let headers = options?.headers || {}
   headers = {
     ...headers,
@@ -61,14 +60,16 @@ const sendRequest = async(data: any | null = null, options: ISendRequestOptions)
   if (options.method !== 'get' && data) {
     if (typeof FormData !== 'undefined' && data instanceof FormData) {
       headers = { ...headers, 'Content-Type': 'multipart/form-data' }
+    } else {
+      requestData = JSON.stringify(data)
     }
   }
 
   try {
-    response = await api( {
+    response = await api({
       ...options,
       headers: headers,
-      data,
+      data: JSON.stringify(data),
     })
     return response
   } catch (error: any) {
