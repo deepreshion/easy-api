@@ -70,5 +70,14 @@ ezApi.get('/todos/1', {}, {
 // 'Authorization': `Bearer c84f18a2-c6c7-4850-be15-93f9cbaef3b3`
 // ''User-Agent': 'Mozilla/5.0 (Android 14; Mobile; rv:121.0) Gecko/121.0 Firefox/121.0'
 ```
+Еще есть возможность добавить кастомный текст на случай ошибки при запросе, errorMessage будет приходить вторым параметром в функции-обработчике ошибок
 
+```js
+ezApi.get('/todos/1', {}, {
+    errorMessage: 'Специфичная ошибка с особенным текстом'
+})
+
+```
+
+Все остальные данные из ``options`` также будут будут переданы в [конфиг запроса](https://axios-http.com/docs/req_config).
 
