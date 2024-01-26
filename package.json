@@ -1,9 +1,17 @@
 {
+  "type": "module",
   "name": "@opsp/ezapi",
   "version": "0.0.1",
   "description": "axios abstraction",
   "license": "MIT",
-  "main": "src/index.ts",
+  "main": "./distribution/index.js",
+  "types": "./distribution/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "distribution"
+  ],
   "devDependencies": {
     "typescript": "^5.3.3"
   },

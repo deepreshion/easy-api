@@ -21,15 +21,21 @@ interface ISendRequestOptions extends IRequestOptions{
     [key:string]: any
 }
 
+interface IErrorCallback {
+    (error: Error, errorMessage?: string | undefined):void
+}
+
 let api = axios.create()
 
-let errorNotify = (error: Error, errorMessage?: string) => {
+let errorNotify: IErrorCallback = (error, errorMessage) => {
     console.log('Ошибка', error, errorMessage)
 }
 
-const mountApi = (config: IAxiosConfig = {}, errorCallback?: () => {}): AxiosInstance => {
+const mountApi = (config: IAxiosConfig = {}, errorCallback?: IErrorCallback): AxiosInstance => {
     api = axios.create(config)
-    errorNotify = errorCallback
+    if (errorCallback) {
+        errorNotify = errorCallback
+    }
     return api
 }
 
@@ -81,7 +87,7 @@ export interface IResponse {
 }
 
 const ezApi = {
-  delete(url: string, data: any = null, opts = {}):Promise<IResponse> {
+  delete(url: string, data: any | null = null, opts = {}):Promise<IResponse> {
     return sendRequest(data, {
       method: 'delete',
       url,
@@ -89,7 +95,7 @@ const ezApi = {
     })
   },
 
-  get(url: string, params: {[key:string]: any} = null, opts = {}):Promise<IResponse> {
+  get(url: string, params: {[key:string]: any} | null = null, opts = {}):Promise<IResponse> {
     return sendRequest(null,
       {
         method: 'get',
@@ -100,7 +106,7 @@ const ezApi = {
     )
   },
 
-  patch(url: string, data: any = null, opts = {}):Promise<IResponse> {
+  patch(url: string, data: any | null = null, opts = {}):Promise<IResponse> {
     return sendRequest(data, {
       method: 'patch',
       url,
@@ -108,7 +114,7 @@ const ezApi = {
     })
   },
 
-  post(url: string, data: FormData | any = null, opts = {}):Promise<IResponse> {
+  post(url: string, data: FormData | any | null = null, opts = {}):Promise<IResponse> {
     return sendRequest(
       data,
       {
@@ -119,7 +125,7 @@ const ezApi = {
     )
   },
 
-  put(url: string, data: any = null, opts = {}):Promise<IResponse> {
+  put(url: string, data: any | null = null, opts = {}):Promise<IResponse> {
     return sendRequest(data, {
       method: 'put',
       url,
