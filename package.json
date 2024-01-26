@@ -15,7 +15,8 @@
     "build": "tsc"
   },
   "files": [
-    "distribution"
+    "distribution",
+    "src"
   ],
   "devDependencies": {
     "typescript": "^5.3.3"
