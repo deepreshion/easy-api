@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 
 interface IErrorCallback {
-    (error: AxiosError, errorMessage?: string | undefined):void
+    (error: AxiosError<ServerError>, errorMessage?: string | undefined):void
 }
 
 interface ServerError {
