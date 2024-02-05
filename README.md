@@ -85,3 +85,10 @@ ezApi.get('/todos/1', {}, {
 
 Все остальные данные из ``options`` также будут будут переданы в [конфиг запроса](https://axios-http.com/docs/req_config).
 
+Чтобы получить [AxiosInstanc](https://axios-http.com/ru/docs/instance) с текущим конфигом можно использовать метод getApi, либо получить его из ``mountApi``
+
+Просмотреть конфигурацию можно через: 
+
+```
+instance.defaults
+```
