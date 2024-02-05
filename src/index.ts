@@ -1,9 +1,9 @@
-import axios, {AxiosError, AxiosResponse} from 'axios'
+import axios, {AxiosError, AxiosResponse, AxiosInstance} from 'axios'
 import { IAxiosConfig, ISendRequestOptions } from "./types/request";
 import { IErrorCallback, ServerError } from "./types/error";
 
 // AxiosInstance
-let api = axios.create()
+let api: AxiosInstance
 
 let errorNotify: IErrorCallback = (error, errorMessage) => {
     console.log('Ошибка', error, errorMessage)
@@ -14,6 +14,7 @@ const mountApi = (config: IAxiosConfig = {}, errorCallback?: IErrorCallback) => 
     if (errorCallback) {
         errorNotify = errorCallback
     }
+    return api
 }
 
 const sendRequest = async(data: any | null = null, options: ISendRequestOptions):Promise<null | AxiosResponse> => {
