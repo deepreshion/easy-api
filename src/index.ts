@@ -9,12 +9,16 @@ let errorNotify: IErrorCallback = (error, errorMessage) => {
     console.log('Ошибка', error, errorMessage)
 }
 
-const mountApi = (config: IAxiosConfig = {}, errorCallback?: IErrorCallback) => {  
+const mountApi = (config: IAxiosConfig = {}, errorCallback?: IErrorCallback): AxiosInstance => {  
     api = axios.create(config)
     if (errorCallback) {
         errorNotify = errorCallback
     }
     return api
+}
+
+const getApi = ():AxiosInstance => {
+  return api
 }
 
 const sendRequest = async(data: any | null = null, options: ISendRequestOptions):Promise<null | AxiosResponse> => {
@@ -106,5 +110,5 @@ const ezApi = {
   },
 }
 
-export { api, mountApi }
+export { getApi, mountApi }
 export default ezApi
